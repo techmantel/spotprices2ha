@@ -12,10 +12,9 @@ header:
 span:
   start: day
 yaxis:
-  - min: 0
-    decimals: 2
+  - decimals: 2
     apex_config:
-      forceNiceScale: true
+      forceNiceScale: false
 now:
   show: true
   label: Now
@@ -31,21 +30,22 @@ series:
     float_precision: 2
     stroke_width: 2
     data_generator: >
-      return [[start, entity.attributes.today_avg*100], [moment(end).subtract(1,
-      'days'), entity.attributes.today_avg*100], []];
+      return [[start, entity.attributes.today_avg], [moment(end).subtract(1,
+      'days'), entity.attributes.today_avg], []];
   - entity: sensor.shf_electricity_price_now
     show:
       in_header: false
       extremas: true
       legend_value: false
     type: column
+    name: Spot price c/kWh
     color: lightgray
     float_precision: 2
     unit: c/kWh
     data_generator: |
       var n = new Date(entity.attributes.data[0]["DateTime"]);
       return entity.attributes.all_prices.map((d, index) => {
-        return [n.getTime()+index*3600000, entity.attributes.all_prices[index]*100];
+        return [n.getTime()+index*3600000, entity.attributes.all_prices[index]];
       });
     color_threshold:
       - value: 0
@@ -63,11 +63,11 @@ series:
       in_header: true
       header_color_threshold: true
       in_chart: false
+    name: Now
     type: line
     color: lightgray
     float_precision: 2
     stroke_width: 0
-    transform: "return x*100"
     unit: c/kWh
     color_threshold:
       - value: 0
